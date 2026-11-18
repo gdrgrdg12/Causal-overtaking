@@ -61,5 +61,22 @@ development libraries:
 bash simulations/run.sh benchmark
 ```
 
-Code license: [GPL-3.0](LICENSE). The vendored secp256k1 library retains its
-[MIT license](third_party/secp256k1/COPYING).
+## Code provenance and license
+
+This artifact builds on the [Ambush artifact](https://github.com/NetSP-KAIST/the-ambush-attack)
+for Park et al., *On Frontrunning Risks in Batch-Order Fair Systems for
+Blockchains* (CCS 2025).
+
+| Component | Origin and changes |
+| --- | --- |
+| `simulations/include/hotstuff/aequitas.h` | Reused unchanged from Ambush; implements the Themis graph, SCC, and Unspool routines. |
+| `simulations/src-unspooling_algo/unspool.cpp` | Adapted from Ambush. Additions include explicit quorum, pair-order and public-order inputs, and optional interval-receipt and hard-edge inputs. |
+| `simulations/src-gen_orderings/` and `simulations/experiments/` | Experiment code added for this study: causal multi-entry workloads, capability and delay controls, regional ordering, and statistical summaries. The Python Themis replay implements the upstream graph and Unspool algorithms. |
+| `setup.sh`, `simulations/run.sh`, `simulations/runtime.sh`, and `simulations/rho-benchmark/` | Setup, experiment orchestration, and processing benchmarks added for this study. |
+| `third_party/secp256k1/` | Vendored dependency, retaining its upstream [MIT license](third_party/secp256k1/COPYING). |
+
+Modification notice, 2026-11-18: this derivative artifact adds the replay
+interfaces and experiments listed above. Upstream copyright and license notices
+are retained. The artifact is distributed under [GPL-3.0](LICENSE), subject to
+the retained file-specific notices. Data sources are listed in
+[simulations/DATA.md](simulations/DATA.md).

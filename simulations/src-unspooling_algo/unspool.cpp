@@ -20,6 +20,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/*
+ * Derived from NetSP-KAIST/the-ambush-attack.
+ * Modification notice recorded 2026-11-18 for the Causal Overtaking artifact:
+ * added explicit quorum, pair-order and public-order replay inputs, plus
+ * optional interval-receipt and hard-edge inputs. The upstream copyright
+ * and GPL notice above are retained.
+ */
+
 #include "hotstuff/aequitas.h"
 #include <iostream>
 #include <vector>
