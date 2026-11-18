@@ -1,20 +1,11 @@
 .venv/
+.cache/
 __pycache__/
 *.py[cod]
-.pytest_cache/
-.mypy_cache/
 .DS_Store
-
-# Generated experiment and benchmark artifacts.
-simulations/data-causality-comparison/
+runs/
 simulations/rho-benchmark/build/
-simulations/rho-benchmark/results/
-
-# Native build products.
 *.o
-*.lo
 *.a
 *.so
-*.so.*
 *.dylib
-*.exe

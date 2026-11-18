@@ -99,15 +99,25 @@ def main():
                 lscpu[key.strip()] = value.strip()
     except (OSError, subprocess.SubprocessError):
         lscpu = {}
+    cpu_vendor = lscpu.get("Vendor ID", "unknown")
+    cpu_model = lscpu.get("Model name", lscpu.get("Model", "unknown"))
+    if platform.system() == "Darwin":
+        try:
+            cpu_model = subprocess.check_output(
+                ["/usr/sbin/sysctl", "-n", "machdep.cpu.brand_string"],
+                text=True, stderr=subprocess.DEVNULL,
+            ).strip()
+            cpu_vendor = "Apple" if platform.machine() == "arm64" else "Intel"
+        except (OSError, subprocess.SubprocessError):
+            pass
     with open(metadata_path, "w", newline="") as output:
         writer = csv.writer(output)
         writer.writerow(("key", "value"))
         writer.writerow(("generated_utc", datetime.now(timezone.utc).isoformat()))
-        writer.writerow(("hostname", platform.node()))
         writer.writerow(("platform", platform.platform()))
         writer.writerow(("architecture", platform.machine()))
-        writer.writerow(("cpu_vendor", lscpu.get("Vendor ID", "unknown")))
-        writer.writerow(("cpu_model", lscpu.get("Model name", lscpu.get("Model", "unknown"))))
+        writer.writerow(("cpu_vendor", cpu_vendor))
+        writer.writerow(("cpu_model", cpu_model))
         writer.writerow(("cpu_count", os.cpu_count()))
         writer.writerow(("clock", "CLOCK_MONOTONIC_RAW"))
         writer.writerow(("transport", "persistent loopback TCP with TCP_NODELAY"))

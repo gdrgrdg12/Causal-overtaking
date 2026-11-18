@@ -1,0 +1,141 @@
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "test.type.keyword": "latencybg"
+          }
+        },
+        {
+          "term": {
+            "meta.ip_version": 4
+          }
+        },
+        {
+          "term": {
+            "result.succeeded": true
+          }
+        },
+        {
+          "range": {
+            "pscheduler.start_time": {
+              "gte": "2026-11-16T04:50:00Z",
+              "lt": "2026-11-16T05:00:00Z"
+            }
+          }
+        },
+        {
+          "terms": {
+            "test.spec.source.keyword": [
+              "lbnl50-ps-lat.es.net",
+              "eqxsv5-ps-lat.es.net",
+              "eqxdc4-ps-lat.es.net",
+              "eqxch2-ps-lat.es.net",
+              "denv-ps-lat.es.net",
+              "salt-ps-lat.es.net",
+              "elpa-ps-lat.es.net",
+              "ga-ps-lat.es.net",
+              "llnl354-ps-lat.es.net",
+              "pantex-ps-lat.es.net",
+              "bost-ps-lat.es.net",
+              "nash-ps-lat.es.net",
+              "newy325hudson-ps-lat.es.net",
+              "chic-ps-lat.es.net",
+              "hous-ps-lat.es.net",
+              "wash-ps-lat.es.net",
+              "star-ps-lat.es.net",
+              "lasv-ps-lat.es.net",
+              "kans-ps-lat.es.net",
+              "albq-ps-lat.es.net",
+              "sacr-ps-lat.es.net",
+              "bnl515-ps-lat.es.net",
+              "bnl725-ps-lat.es.net",
+              "bois-ps-lat.es.net",
+              "chat-ps-lat.es.net",
+              "newy32aoa-ps-lat.es.net",
+              "orau-ps-lat.es.net",
+              "sand-ps-lat.es.net",
+              "sunn-ps-lat.es.net"
+            ]
+          }
+        },
+        {
+          "terms": {
+            "test.spec.dest.keyword": [
+              "lbnl50-ps-lat.es.net",
+              "eqxsv5-ps-lat.es.net",
+              "eqxdc4-ps-lat.es.net",
+              "eqxch2-ps-lat.es.net",
+              "denv-ps-lat.es.net",
+              "salt-ps-lat.es.net",
+              "elpa-ps-lat.es.net",
+              "ga-ps-lat.es.net",
+              "llnl354-ps-lat.es.net",
+              "pantex-ps-lat.es.net",
+              "bost-ps-lat.es.net",
+              "nash-ps-lat.es.net",
+              "newy325hudson-ps-lat.es.net",
+              "chic-ps-lat.es.net",
+              "hous-ps-lat.es.net",
+              "wash-ps-lat.es.net",
+              "star-ps-lat.es.net",
+              "lasv-ps-lat.es.net",
+              "kans-ps-lat.es.net",
+              "albq-ps-lat.es.net",
+              "sacr-ps-lat.es.net",
+              "bnl515-ps-lat.es.net",
+              "bnl725-ps-lat.es.net",
+              "bois-ps-lat.es.net",
+              "chat-ps-lat.es.net",
+              "newy32aoa-ps-lat.es.net",
+              "orau-ps-lat.es.net",
+              "sand-ps-lat.es.net",
+              "sunn-ps-lat.es.net"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "sources": {
+      "terms": {
+        "field": "test.spec.source.keyword",
+        "size": 40
+      },
+      "aggs": {
+        "destinations": {
+          "terms": {
+            "field": "test.spec.dest.keyword",
+            "size": 40
+          },
+          "aggs": {
+            "latest": {
+              "top_hits": {
+                "size": 1,
+                "sort": [
+                  {
+                    "pscheduler.start_time": "desc"
+                  }
+                ],
+                "_source": [
+                  "test.spec.source",
+                  "test.spec.dest",
+                  "meta.ip_version",
+                  "pscheduler.start_time",
+                  "pscheduler.tool",
+                  "result.latency",
+                  "result.max_clock_error",
+                  "result.succeeded",
+                  "result.packets"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
